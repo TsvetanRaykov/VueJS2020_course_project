@@ -10,7 +10,7 @@
         <v-text-field prepend-icon="mdi-lock" label="Retype Password" type="password" />
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="success">Login</v-btn>
+          <v-btn color="success" @click="$emit('navigationEvent', 'AppLogin')">Login</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="info">Register</v-btn>
         </v-card-actions>
@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: 'AppLogin',
+  name: "AppLogin",
   data: () => ({})
 };
 </script>

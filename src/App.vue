@@ -1,36 +1,35 @@
 <template>
   <v-app>
-    <app-header @navigationEvent="navigateEventHandler($event)" />
+    <app-header />
     <v-content>
-      <component @navigationEvent="navigateEventHandler($event)" :is="activeComponent" />
+      <!-- <component @navigationEvent="navigateEventHandler($event)" :is="activeComponent" /> -->
+      <router-view></router-view>
     </v-content>
     <app-footer />
   </v-app>
 </template>
 
 <script>
-import AppHeader from "./components/core/AppHeader";
-import AppLogin from "./components/core/AppLogin";
-import AppRegister from "./components/core/AppRegister";
-import AppFooter from "./components/core/AppFooter";
+import AppHeader from './components/core/AppHeader';
+import AppFooter from './components/core/AppFooter';
+// import AppLogin from './components/user/AppLogin';
+// import AppRegister from './components/user/AppRegister';
 
 export default {
-  name: "App",
+  name: 'App',
 
   components: {
     AppHeader,
-    AppLogin,
-    AppRegister,
     AppFooter
   },
 
   data: () => ({
-    activeComponent: "AppLogin"
-  }),
-  methods: {
-    navigateEventHandler(componentName) {
-      this.activeComponent = componentName;
-    }
-  }
+    //
+  })
+  // methods: {
+  //   navigateEventHandler(componentName) {
+  //     this.activeComponent = componentName;
+  //   }
+  // }
 };
 </script>

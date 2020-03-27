@@ -1,0 +1,4 @@
+{
+  "eslint.workingDirectories": ["./vuejs-course-project"],
+  "eslint.validate": ["javascript", "javascriptreact", "vue"]
+}

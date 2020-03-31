@@ -1,4 +1,4 @@
-# vuejs-meistertask-course-project
+# vuejs-2020-course-project
 
 ## Project setup
 ```

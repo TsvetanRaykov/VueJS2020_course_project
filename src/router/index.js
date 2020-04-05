@@ -1,9 +1,9 @@
 import Home from '../components/Home';
-import UserLogin from '../components/user/AppLogin';
-import UserRegister from '../components/user/AppRegister';
+import UserLogin from '../components/user/Login';
+import UserRegister from '../components/user/Register';
 import EventsAll from '../components/Events/Events';
 import EventsCreate from '../components/Events/Create';
-import NotFound from '../components/core/AppNotFound';
+import NotFound from '../components/core/NotFound';
 
 
 const routes = [

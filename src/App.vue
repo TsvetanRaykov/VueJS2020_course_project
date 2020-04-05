@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import AppHeader from './components/core/AppHeader';
-import AppFooter from './components/core/AppFooter';
+import AppHeader from "./components/core/Header";
+import AppFooter from "./components/core/Footer";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     AppHeader,
@@ -23,6 +23,5 @@ export default {
   data: () => ({
     //
   })
-
 };
 </script>

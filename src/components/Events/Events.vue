@@ -8,7 +8,7 @@
               <!-- <v-hover>
                 <template v-slot="{ hover }">
               <v-card :to="event | eventDetailsLink" :elevation="hover ? 18 : 6">-->
-              <v-card :to="event | eventDetailsLink">
+              <v-card>
                 <v-img
                   :src="event.imageUrl"
                   class="white--text align-end"
@@ -19,7 +19,12 @@
                 </v-img>
                 <v-card-text class="title">{{event.when}}</v-card-text>
                 <v-card-actions>
-                  <v-btn class="ma-2" outlined color="primary">Event Details</v-btn>
+                  <v-btn
+                    class="ma-2"
+                    outlined
+                    color="primary"
+                    :to="event | eventDetailsLink"
+                  >Event Details</v-btn>
                   <v-spacer></v-spacer>
 
                   <v-btn icon>

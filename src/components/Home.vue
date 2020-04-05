@@ -11,8 +11,8 @@
     <v-row>
       <v-col cols="12">
         <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-          <v-carousel-item v-for="event in events" :key="event.id" :src="event.imageUrl">
-            <div class="title">{{event.title}}</div>
+          <v-carousel-item v-for="event in events" :key="event.id" :src="event.imageUrl" :to="event | eventDetailsLink">
+            <div class="title">{{ event.title }}</div>
           </v-carousel-item>
         </v-carousel>
       </v-col>
@@ -28,24 +28,28 @@ export default {
   data: () => ({
     events: [
       {
-        imageUrl: "https://i.ebayimg.com/images/g/vg4AAOSwfVpYpiI2/s-l1600.jpg",
-        id: "123",
-        title: "Concert Metallica"
+        imageUrl: 'https://i.ebayimg.com/images/g/vg4AAOSwfVpYpiI2/s-l1600.jpg',
+        id: '123',
+        title: 'Concert Metallica',
+      },
+      {
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/74/Gavel_%288890290708%29.jpg',
+        id: '124',
+        title: 'Corporate Banquet',
       },
       {
         imageUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/7/74/Gavel_%288890290708%29.jpg",
-        id: "124",
-        title: "Corporate Banquet"
+          'https://previews.123rf.com/images/halfpoint/halfpoint1511/halfpoint151100189/47410071-beautiful-young-couple-on-a-walk-in-autumn-forest.jpg',
+        id: '125',
+        title: 'Mountain Hike',
       },
-      {
-        imageUrl:
-          "https://previews.123rf.com/images/halfpoint/halfpoint1511/halfpoint151100189/47410071-beautiful-young-couple-on-a-walk-in-autumn-forest.jpg",
-        id: "125",
-        title: "Mountain Hike"
-      }
-    ]
-  })
+    ],
+  }),
+  filters: {
+    eventDetailsLink(event) {
+      return `/events/${event.id}`;
+    },
+  },
 };
 </script>
 <style scoped>

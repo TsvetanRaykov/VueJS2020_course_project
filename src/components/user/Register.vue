@@ -13,13 +13,14 @@
               prepend-icon="mdi-account-circle"
               label="Email"
               name="email"
-              type="email"
-              value=""
+              value
               v-model="email"
               :rules="emailRules"
               required
             ></v-text-field>
-            <span class="caption grey--text text--darken-1">This is the email you will use to login to your EventOur account</span>
+            <span
+              class="caption grey--text text--darken-1"
+            >This is the email you will use to login to your EventOur account</span>
           </v-card-text>
         </v-window-item>
 
@@ -47,7 +48,12 @@
         </v-window-item>
         <v-window-item :value="3">
           <div class="pa-4 text-center">
-            <v-img class="mb-4" contain height="128" src="https://cdn.vuetifyjs.com/images/logos/v.svg"></v-img>
+            <v-img
+              class="mb-4"
+              contain
+              height="128"
+              src="https://cdn.vuetifyjs.com/images/logos/v.svg"
+            ></v-img>
             <h3 class="title font-weight-light mb-2">Welcome to EventOur</h3>
             <span class="caption grey--text">Thanks for signing up!</span>
           </div>
@@ -60,8 +66,20 @@
         <v-btn v-if="step === 1" color="success" to="/user/login">Login</v-btn>
         <v-btn v-if="step === 2" @click="step--" color="info" :disabled="!valid">Back</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-if="step === 1" color="primary" @click="step++" :disabled="!valid" type="button">Next</v-btn>
-        <v-btn v-else-if="step === 2" color="primary" type="submit" @click="submitRegistrationHandler" :disabled="!valid">Sign up</v-btn>
+        <v-btn
+          v-if="step === 1"
+          color="primary"
+          @click="step++"
+          :disabled="!valid"
+          type="button"
+        >Next</v-btn>
+        <v-btn
+          v-else-if="step === 2"
+          color="primary"
+          type="submit"
+          @click="submitRegistrationHandler"
+          :disabled="!valid"
+        >Sign up</v-btn>
       </v-card-actions>
     </v-card>
   </v-form>
@@ -71,37 +89,59 @@ export default {
   data: () => ({
     valid: true,
     step: 1,
-    email: '',
-    emailRules: [(v) => !!v || 'E-mail is required', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid'],
-    password: '',
-    passwordRules: [(v) => !!v || 'Password is required', (v) => !(v && v.length < 3) || 'Password must be at least 3 characters'],
-    confirmPassword: '',
+    email: "",
+    emailRules: [
+      v => !!v || "E-mail is required",
+      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+    ],
+    password: "",
+    passwordRules: [
+      v => !!v || "Password is required",
+      v => !(v && v.length < 3) || "Password must be at least 3 characters"
+    ],
+    confirmPassword: ""
   }),
 
   computed: {
     currentTitle() {
       switch (this.step) {
         case 1:
-          return 'Register';
+          return "Register";
         case 2:
-          return 'Create a password';
+          return "Create a password";
         default:
-          return 'Account created';
+          return "Account created";
       }
     },
     comparePasswords() {
-      // console.log(this.email, this.password, this.confirmPassword);
-      return this.password !== this.confirmPassword ? ['Passwords do not match'] : [];
+      return this.password !== this.confirmPassword
+        ? ["Passwords do not match"]
+        : [];
     },
+    user() {
+      return this.$store.getters.user;
+    }
   },
   methods: {
     submitRegistrationHandler() {
-      // console.log(this.email, this.password, this.confirmPassword);
+      this.$store.dispatch("registerUser", {
+        email: this.email,
+        password: this.password
+      });
       this.step++;
-    },
-    validateForm() {
-      this.$refs.form.validate();
-    },
+    }
+    // validateForm() {
+    //   this.$refs.form.validate();
+    // }
   },
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        setTimeout(() => {
+          this.$router.push("/events");
+        }, 3000);
+      }
+    }
+  }
 };
 </script>

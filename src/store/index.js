@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import * as firebase from 'firebase';
 
 Vue.use(Vuex);
 
@@ -41,16 +42,14 @@ export default new Vuex.Store({
                 end: 1601719200,
               },
         ],
-        user:{
-            id: '',
-            eventsJoined: [],
-            eventsInterested: [],
-            eventsCreated: [],
-        }
+        user: null
     },
     mutations:{
       createEvent(state, payload){
         state.loadedEvents.push(payload);
+      },
+      setUser(state, payload){
+        state.user = payload;
       }
     },
     actions:{
@@ -65,6 +64,21 @@ export default new Vuex.Store({
           id: 'werrqfsdv'
         }
         commit('createEvent', event);
+      },
+      registerUser({commit}, payload){
+        firebase.auth()
+        .createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(data=>{
+          const { user } = data;
+          const newUser = {
+            id: user.uid,
+            eventsJoined: [],
+            eventsInterested: [],
+            eventsCreated: [],
+          }
+          commit('setUser', newUser)
+        })
+        .catch(console.error);
       }
     },
     getters:{
@@ -82,6 +96,9 @@ export default new Vuex.Store({
                     return event.id===eventId;
                 });
             };
+        },
+        user(state){
+          return state.user;
         }
     }
 })

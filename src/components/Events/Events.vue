@@ -20,10 +20,10 @@
                 <v-card-text>
                   <v-row>
                     <v-col xs="12" sm="6" md="12" lg="6" class="text-no-wrap text-left"
-                      ><h4>{{ event.start | dateFormat }}</h4>
+                      ><h4>{{ event.start | date }}</h4>
                     </v-col>
                     <v-col xs="12" sm="6" md="12" lg="6" class="text-no-wrap text-right"
-                      ><h4>{{ event.end | dateFormat }}</h4></v-col
+                      ><h4>{{ event.end | date }}</h4></v-col
                     >
                   </v-row>
                 </v-card-text>
@@ -55,14 +55,12 @@
 </template>
 
 <script>
-import DateFilters from '../mixins/filters.js';
 export default {
   computed: {
     events() {
       return this.$store.getters.loadedEvents;
     },
   },
-  mixins: [DateFilters],
   filters: {
     eventDetailsLink(event) {
       return `/events/${event.id}`;

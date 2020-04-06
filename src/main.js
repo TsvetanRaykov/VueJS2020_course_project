@@ -4,10 +4,14 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import routes from './router';
 import store from './store';
+import dateFilter from './filters/date';
+
 
 const router = new VueRouter(routes);
-
 Vue.use(VueRouter);
+
+Vue.filter('date', dateFilter);
+
 Vue.config.productionTip = false
 
 new Vue({

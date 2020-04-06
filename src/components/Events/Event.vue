@@ -10,8 +10,8 @@
           </v-img>
           <v-card-text>
             <div>
-              <span class="info--text">{{ event.start | dateFormat }}</span> -
-              <span class="success--text">{{ event.end | dateFormat }}</span>
+              <span class="info--text">{{ event.start | date }}</span> -
+              <span class="success--text">{{ event.end | date }}</span>
               <span class="primary--text d-inline-block ml-5">{{ event.location }}</span>
             </div>
             <div>
@@ -31,9 +31,7 @@
 </template>
 
 <script>
-import DateFilters from '../mixins/filters.js';
 export default {
-  mixins: [DateFilters],
   props: {
     id: {
       type: String,

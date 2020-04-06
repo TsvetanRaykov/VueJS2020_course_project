@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "firebase": "^7.13.2",
     "moment": "^2.24.0",
     "vue": "^2.6.11",
     "vue-ctk-date-time-picker": "^2.4.0",

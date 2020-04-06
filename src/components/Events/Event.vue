@@ -4,15 +4,18 @@
       <v-col cols="12">
         <v-card>
           <v-card-title>
-            <h6>{{ event.title }}</h6>
+            <h3 class="text--secondary">{{ event.title }}</h3>
           </v-card-title>
           <v-img :src="event.imageUrl" class="white--text align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="400px">
           </v-img>
           <v-card-text>
-            <div class="info--text">{{ event.start }}</div>
             <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur incidunt quidem quam distinctio tempore unde repudiandae
-              fuga illo voluptas, dolorum, iusto nemo, voluptate molestias quod! Iusto ab sed nihil tempore.
+              <span class="info--text">{{ event.start | dateFormat }}</span> -
+              <span class="success--text">{{ event.end | dateFormat }}</span>
+              <span class="primary--text d-inline-block ml-5">{{ event.location }}</span>
+            </div>
+            <div>
+              {{ event.description }}
             </div>
           </v-card-text>
           <v-card-actions>
@@ -28,8 +31,15 @@
 </template>
 
 <script>
+import DateFilters from '../mixins/filters.js';
 export default {
-  props: ['id'],
+  mixins: [DateFilters],
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
   computed: {
     event() {
       return this.$store.getters.loadedEvent(this.id);

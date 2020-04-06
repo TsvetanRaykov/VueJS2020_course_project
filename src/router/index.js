@@ -12,7 +12,7 @@ const routes = [
     { path: '/user/login', component: UserLogin },
     { path: '/user/register', component: UserRegister },
     { path: '/events/create', component: EventsCreate },
-    { path: '/events/:id', component: EventDetails },
+    { path: '/events/:id', component: EventDetails, props: true },
     { path: '/events', component: EventsAll },
     { path: '*', component: NotFound },
   ]

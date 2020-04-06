@@ -44,8 +44,25 @@ export default new Vuex.Store({
             eventsCreated: [],
         }
     },
-    mutations:{},
-    actions:{},
+    mutations:{
+      createEvent(state, payload){
+        state.loadedEvents.push(payload);
+      }
+    },
+    actions:{
+      createEvent({commit}, payload){
+        const event = {
+          title: payload.title,
+          location: payload.location,
+          imageUrl: payload.imageUrl,
+          description: payload.description,
+          start: payload.start,
+          end: payload.end,
+          id: 'werrqfsdv'
+        }
+        commit('createEvent', event);
+      }
+    },
     getters:{
         loadedEvents(state){
             return state.loadedEvents.sort((a, b)=>{

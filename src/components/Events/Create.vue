@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <form @submit.prevent="createEventHandler">
+        <v-form @submit.prevent="createEventHandler" v-model="valid">
           <v-row>
             <v-col cols="12" sm="6" offset-sm="3" ma="0" class="py-0">
               <v-text-field
@@ -16,17 +16,19 @@
                 label="Title"
                 v-model="title"
                 required
+                :rules="titleRules"
               ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" sm="6" offset-sm="3" class="py-0">
+            <v-col cols="12" sm="6" offset-sm="3">
               <v-text-field
                 name="location"
                 id="location"
                 label="Location"
                 v-model="location"
                 required
+                :rules="locationRules"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -38,9 +40,11 @@
                   <div class="text--secondary">Duration</div>
                   <date-time-picker
                     class="mt-1"
+                    :class="{ error: !startTime }"
                     label="Select Start Time"
                     v-model="startTime"
                     format="YYYY-MM-DD hh:mm a"
+                    id="pick-start"
                   />
                 </v-col>
                 <v-col cols="6">
@@ -56,16 +60,19 @@
               </v-row>
             </v-col>
           </v-row>
-
           <v-row>
-            <v-col cols="12" sm="6" offset-sm="3" class="py-0">
-              <v-text-field
-                name="imageUrl"
-                id="image-url"
-                label="Image Url"
-                v-model="imageUrl"
+            <v-col cols="12" sm="6" offset-sm="3" class="pb-0">
+              <v-file-input
+                accept="image/*"
+                label="Image"
+                show-size
+                dense
+                hint="Select an image for the event"
                 required
-              ></v-text-field>
+                prepend-icon="mdi-camera"
+                :rules="imageRules"
+                placeholder="Pick a picture"
+              ></v-file-input>
             </v-col>
           </v-row>
           <v-row>
@@ -82,22 +89,22 @@
                 label="Description"
                 v-model="description"
                 auto-grow
-                required
+                :rules="descriptionRules"
               ></v-textarea>
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" sm="6" offset-sm="3" class="py-0">
+            <v-col cols="12" sm="6" offset-sm="3">
               <v-btn
                 class="primary"
-                :disabled="!formIsValid"
+                :disabled="!(valid && startTime)"
                 :loading="loading"
                 type="submit"
                 >Create Event</v-btn
               >
             </v-col>
           </v-row>
-        </form>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>
@@ -108,28 +115,24 @@ import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 export default {
   components: { DateTimePicker: VueCtkDateTimePicker },
-  watch: {
-    // startTime: (val) => console.log(val),
-  },
   data: () => ({
+    valid: true,
     title: "",
+    titleRules: [v => !!v || "Title is required"],
     location: "",
-    imageUrl: "",
+    locationRules: [v => !!v || "Location is required"],
+    image: "",
+    imageRules: [
+      v => !!v || "Image is required",
+      v => !v || v.size < 1000000 || "Image size should be less than 1 MB!"
+    ],
     description: "",
+    descriptionRules: [v => !!v || "Description is required"],
     startTime: "",
-    endTime: ""
+    endTime: "",
+    imageUrl: ""
   }),
   computed: {
-    formIsValid() {
-      return (
-        this.title !== "" &&
-        this.location !== "" &&
-        this.imageUrl !== "" &&
-        this.description !== "" &&
-        this.startTime !== "" &&
-        this.endTime !== ""
-      );
-    },
     loading() {
       return this.$store.getters.loading;
     }
@@ -157,5 +160,8 @@ export default {
 <style scoped>
 .img-preview {
   max-width: 400px;
+}
+#pick-start-wrapper.error {
+  border-left: 3px solid red !important;
 }
 </style>

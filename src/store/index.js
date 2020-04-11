@@ -42,7 +42,9 @@ export default new Vuex.Store({
                 end: 1601719200,
               },
         ],
-        user: null
+        user: null,
+        loading: false,
+        error: null
     },
     mutations:{
       createEvent(state, payload){
@@ -50,6 +52,12 @@ export default new Vuex.Store({
       },
       setUser(state, payload){
         state.user = payload;
+      },
+      setLoading(state, payload){
+        state.loading = payload;
+      },
+      setError(state, payload){
+        state.error = payload;
       }
     },
     actions:{
@@ -69,6 +77,20 @@ export default new Vuex.Store({
         firebase.auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(data=>{
+          const { user } = data;
+          const newUser = {
+            id: user.uid,
+            eventsJoined: [],
+            eventsInterested: [],
+            eventsCreated: [],
+          }
+          commit('setUser', newUser)
+        })
+        .catch(console.error);
+      },
+      loginUser({commit}, payload){
+        firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(data =>{
           const { user } = data;
           const newUser = {
             id: user.uid,

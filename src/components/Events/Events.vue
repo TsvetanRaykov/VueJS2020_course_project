@@ -19,29 +19,44 @@
                 </v-img>
                 <v-card-text>
                   <v-row>
-                    <v-col xs="12" sm="6" md="12" lg="6" class="text-no-wrap text-left"
-                      ><h4>{{ event.start | date }}</h4>
-                    </v-col>
-                    <v-col xs="12" sm="6" md="12" lg="6" class="text-no-wrap text-right"
-                      ><h4>{{ event.end | date }}</h4></v-col
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="12"
+                      lg="6"
+                      class="text-no-wrap text-left caption py-0"
                     >
+                      <h4>{{ event.start | date('DD MMMM YYYY') }}</h4>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12" class="py-0">
+                      {{ event.location }}
+                      <!-- <h4>{{ event.end | date }}</h4> -->
+                    </v-col>
                   </v-row>
                 </v-card-text>
-                <v-card-actions>
-                  <v-btn class="ma-2" outlined color="primary" :to="event | eventDetailsLink">Event Details</v-btn>
-                  <v-spacer></v-spacer>
+                <v-card-actions class="py-0" :class="{'justify-center':!isAuth}">
+                  <v-btn
+                    class="ma-2"
+                    outlined
+                    color="primary"
+                    :to="event | eventDetailsLink"
+                  >Event Details</v-btn>
+                  <v-spacer v-if="isAuth"></v-spacer>
+                  <span v-if="isAuth">
+                    <v-btn icon>
+                      <v-icon>mdi-heart</v-icon>
+                    </v-btn>
 
-                  <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                  </v-btn>
+                    <v-btn icon class="hidden-md-only">
+                      <v-icon>mdi-bookmark</v-icon>
+                    </v-btn>
 
-                  <v-btn icon class="hidden-md-only">
-                    <v-icon>mdi-bookmark</v-icon>
-                  </v-btn>
-
-                  <v-btn icon class="hidden-md-only">
-                    <v-icon>mdi-share-variant</v-icon>
-                  </v-btn>
+                    <v-btn icon class="hidden-md-only">
+                      <v-icon>mdi-share-variant</v-icon>
+                    </v-btn>
+                  </span>
                 </v-card-actions>
               </v-card>
               <!-- </template> 
@@ -60,12 +75,18 @@ export default {
     events() {
       return this.$store.getters.loadedEvents;
     },
+    isAuth() {
+      return (
+        this.$store.getters.user !== null &&
+        this.$store.getters.user !== undefined
+      );
+    }
   },
   filters: {
     eventDetailsLink(event) {
       return `/events/${event.id}`;
-    },
-  },
+    }
+  }
 };
 </script>
 

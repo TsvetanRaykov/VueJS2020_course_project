@@ -67,11 +67,13 @@
                 label="Image"
                 show-size
                 dense
-                hint="Select an image for the event"
+                hint="Image of the event"
                 required
                 prepend-icon="mdi-camera"
+                v-model="image"
                 :rules="imageRules"
                 placeholder="Pick a picture"
+                @change="filePickedHandler"
               ></v-file-input>
             </v-col>
           </v-row>
@@ -121,7 +123,7 @@ export default {
     titleRules: [v => !!v || "Title is required"],
     location: "",
     locationRules: [v => !!v || "Location is required"],
-    image: "",
+    image: null,
     imageRules: [
       v => !!v || "Image is required",
       v => !v || v.size < 1000000 || "Image size should be less than 1 MB!"
@@ -152,6 +154,13 @@ export default {
       };
       this.$store.dispatch("createEvent", eventData);
       this.$router.push("/events");
+    },
+    filePickedHandler(img) {
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.imageUrl = fileReader.result;
+      });
+      fileReader.readAsDataURL(img);
     }
   }
 };

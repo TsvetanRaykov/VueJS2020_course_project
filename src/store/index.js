@@ -6,43 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    loadedEvents: [
-      {
-        imageUrl: "https://i.ebayimg.com/images/g/vg4AAOSwfVpYpiI2/s-l1600.jpg",
-        id: "123",
-        title: "Concert Metallica",
-        location: "Somewhere",
-        start: 1601719200,
-        end: 1601719200
-      },
-      {
-        imageUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/7/74/Gavel_%288890290708%29.jpg",
-        id: "124",
-        title: "Corporate Banquet",
-        location: "Somewhere",
-        start: 1601719200,
-        end: 1601719200
-      },
-      {
-        imageUrl:
-          "https://previews.123rf.com/images/halfpoint/halfpoint1511/halfpoint151100189/47410071-beautiful-young-couple-on-a-walk-in-autumn-forest.jpg",
-        id: "125",
-        title: "Mountain Hike",
-        location: "Somewhere",
-        start: 1601719200,
-        end: 1601719200
-      },
-      {
-        imageUrl:
-          "https://previews.123rf.com/images/halfpoint/halfpoint1511/halfpoint151100189/47410071-beautiful-young-couple-on-a-walk-in-autumn-forest.jpg",
-        id: "126",
-        title: "Mountain Hike",
-        location: "Somewhere",
-        start: 1601719200,
-        end: 1601719200
-      }
-    ],
+    loadedEvents: [],
     user: null,
     loading: false,
     error: null
@@ -105,27 +69,44 @@ export default new Vuex.Store({
       const event = {
         title: payload.title,
         location: payload.location,
-        imageUrl: payload.imageUrl,
         description: payload.description,
         start: payload.start,
         end: payload.end,
         creatorId: getters.user.id
       };
+      let imageUrl, key;
       firebase
         .database()
         .ref("events")
         .push(event)
         .then(data => {
           commit("clearError");
-          const id = data.key;
-          commit("createEvent", { ...event, id });
+          key = data.key;
+          return key;
+        })
+        .then(key => {
+          const fileName = payload.image.name;
+          const ext = fileName.slice(fileName.lastIndexOf("."));
+          return firebase
+            .storage()
+            .ref(`events/${key}${ext}`)
+            .put(payload.image);
+        })
+        .then(async data => {
+          imageUrl = await data.metadata.ref.getDownloadURL();
+          return firebase
+            .database()
+            .ref("events")
+            .child(key)
+            .update({ imageUrl });
+        })
+        .then(() => {
+          commit("createEvent", { ...event, imageUrl, id: key });
         })
         .catch(error => {
           commit("setError", error);
-          console.log(error);
-        })
-        .finally(() => {
           commit("setLoading", false);
+          console.log(error);
         });
     },
     registerUser({ commit }, payload) {
@@ -185,7 +166,7 @@ export default new Vuex.Store({
     },
     autoLogin({ commit }, payload) {
       commit("setUser", {
-        id: payload.id,
+        id: payload.uid,
         eventsJoined: [],
         eventsInterested: [],
         eventsCreated: []

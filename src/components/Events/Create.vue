@@ -99,7 +99,7 @@
             <v-col cols="12" sm="6" offset-sm="3">
               <v-btn
                 class="primary"
-                :disabled="!(valid && startTime)"
+                :disabled="!formIsValid"
                 :loading="loading"
                 type="submit"
                 >Create Event</v-btn
@@ -130,13 +130,16 @@ export default {
     ],
     description: "",
     descriptionRules: [v => !!v || "Description is required"],
-    startTime: "",
-    endTime: "",
+    startTime: null,
+    endTime: null,
     imageUrl: ""
   }),
   computed: {
     loading() {
       return this.$store.getters.loading;
+    },
+    formIsValid() {
+      return this.valid && !!this.startTime;
     }
   },
   methods: {
@@ -147,7 +150,7 @@ export default {
       const eventData = {
         title: this.title,
         location: this.location,
-        imageUrl: this.imageUrl,
+        image: this.image,
         description: this.description,
         start: new Date(this.startTime).getTime(),
         end: new Date(this.endTime).getTime()

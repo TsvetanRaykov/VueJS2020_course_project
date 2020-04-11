@@ -8,10 +8,20 @@
         <v-btn large to="/events/create" class="info">Create Event</v-btn>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="loading">
+      <v-col cols="12" class="text-center">
+        <v-progress-circular :size="100" color="primary" indeterminate :width="7"></v-progress-circular>
+      </v-col>
+    </v-row>
+    <v-row v-if="!loading">
       <v-col cols="12">
         <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
-          <v-carousel-item v-for="event in events" :key="event.id" :src="event.imageUrl" :to="event | eventDetailsLink">
+          <v-carousel-item
+            v-for="event in events"
+            :key="event.id"
+            :src="event.imageUrl"
+            :to="event | eventDetailsLink"
+          >
             <div class="title">{{ event.title }}</div>
           </v-carousel-item>
         </v-carousel>
@@ -29,12 +39,15 @@ export default {
     events() {
       return this.$store.getters.featuredEvents;
     },
+    loading() {
+      return this.$store.getters.loading;
+    }
   },
   filters: {
     eventDetailsLink(event) {
       return `/events/${event.id}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

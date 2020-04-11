@@ -25,7 +25,13 @@
         <v-card-actions>
           <v-btn color="success" to="/user/register">Register</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="info" type="submit" :disabled="!valid">Login</v-btn>
+          <v-btn
+            color="info"
+            type="submit"
+            :disabled="!valid"
+            :loading="loading"
+            >Login</v-btn
+          >
         </v-card-actions>
       </v-form>
     </v-card-text>
@@ -48,6 +54,9 @@ export default {
   computed: {
     user() {
       return this.$store.getters.user;
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   },
   methods: {

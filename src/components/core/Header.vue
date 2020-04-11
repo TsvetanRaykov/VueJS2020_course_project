@@ -1,54 +1,73 @@
 <template>
-  <header>
-    <v-navigation-drawer v-model="sideNav" absolute temporary>
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title class="title">John Leider</v-list-item-title>
-          <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item v-for="item in menuItems" :key="item.title" @click="navigate(item.url)">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+  <v-container>
+    <header>
+      <v-navigation-drawer v-model="sideNav" absolute temporary>
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
+          </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="title">John Leider</v-list-item-title>
+            <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar app color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="sideNav = !sideNav" class="hidden-md-and-up"></v-app-bar-nav-icon>
-      <v-toolbar-title>
-        <router-link tag="span" to="/" class="pointer">EventOur</router-link>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-item-group class="hidden-sm-and-down">
-        <v-btn
-          color="white"
-          class="text-capitalize"
-          text
-          rounded
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.url"
-          exact
-        >
-          <v-icon>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
-      </v-item-group>
-    </v-app-bar>
-  </header>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-item
+            v-for="item in menuItems"
+            :key="item.title"
+            @click="navigate(item.url)"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+      <v-app-bar app color="primary" dark>
+        <v-app-bar-nav-icon
+          @click.stop="sideNav = !sideNav"
+          class="hidden-md-and-up"
+        ></v-app-bar-nav-icon>
+        <v-toolbar-title>
+          <router-link tag="span" to="/" class="pointer">EventOur</router-link>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-item-group class="hidden-sm-and-down">
+          <v-btn
+            color="white"
+            class="text-capitalize"
+            text
+            rounded
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.url"
+            @click="menuClick(item.title)"
+            exact
+          >
+            <v-icon>{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </v-btn>
+        </v-item-group>
+      </v-app-bar>
+    </header>
+    <v-row class="row-alert">
+      <v-col cols="12">
+        <app-alert
+          v-if="error"
+          @dismissed="alertDismissHandler"
+          :text="error.message"
+        ></app-alert>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
 export default {
@@ -60,6 +79,14 @@ export default {
   methods: {
     navigate(url) {
       this.$router.push(url).catch(() => {});
+    },
+    alertDismissHandler() {
+      this.$store.dispatch("clearError");
+    },
+    menuClick(title) {
+      if (title === "Log out") {
+        this.$store.dispatch("logoutUser");
+      }
     }
   },
   computed: {
@@ -102,7 +129,10 @@ export default {
                 icon: "mdi-account-details",
                 url: "/user/profile"
               },
-              { title: "Log out", icon: "mdi-account-off-outline", url: "" }
+              {
+                title: "Log out",
+                icon: "mdi-account-off-outline"
+              }
             ]
           : [
               // guest items
@@ -113,6 +143,9 @@ export default {
               }
             ]
       );
+    },
+    error() {
+      return this.$store.getters.error;
     }
   }
 };
@@ -120,5 +153,9 @@ export default {
 <style scoped>
 .pointer {
   cursor: pointer;
+}
+.row-alert {
+  height: 30px;
+  margin: 50px 0 -50px;
 }
 </style>

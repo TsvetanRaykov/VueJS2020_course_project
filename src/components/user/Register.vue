@@ -3,7 +3,12 @@
     <v-card class="mx-auto mt-5" max-width="400">
       <v-card-title class="title font-weight-regular justify-space-between">
         <span>{{ currentTitle }}</span>
-        <v-avatar color="primary lighten-2" class="subheading white--text" size="24" v-text="step"></v-avatar>
+        <v-avatar
+          color="primary lighten-2"
+          class="subheading white--text"
+          size="24"
+          v-text="step"
+        ></v-avatar>
       </v-card-title>
 
       <v-window v-model="step">
@@ -18,9 +23,10 @@
               :rules="emailRules"
               required
             ></v-text-field>
-            <span
-              class="caption grey--text text--darken-1"
-            >This is the email you will use to login to your EventOur account</span>
+            <span class="caption grey--text text--darken-1"
+              >This is the email you will use to login to your EventOur
+              account</span
+            >
           </v-card-text>
         </v-window-item>
 
@@ -43,7 +49,9 @@
               type="password"
               :rules="comparePasswords"
             ></v-text-field>
-            <span class="caption grey--text text--darken-1">Please enter a password for your account</span>
+            <span class="caption grey--text text--darken-1"
+              >Please enter a password for your account</span
+            >
           </v-card-text>
         </v-window-item>
         <v-window-item :value="3">
@@ -64,40 +72,47 @@
 
       <v-card-actions>
         <v-btn v-if="step === 1" color="success" to="/user/login">Login</v-btn>
-        <v-btn v-if="step === 2" @click="step--" color="info" :disabled="!valid">Back</v-btn>
+        <v-btn v-if="step === 2" @click="step--" color="info">Back</v-btn>
         <v-spacer></v-spacer>
         <v-btn
           v-if="step === 1"
           color="primary"
           @click="step++"
-          :disabled="!valid"
+          :disabled="!validEmail"
           type="button"
-        >Next</v-btn>
+          >Next</v-btn
+        >
         <v-btn
           v-else-if="step === 2"
           color="primary"
           type="submit"
           @click="submitRegistrationHandler"
           :disabled="!valid"
-        >Sign up</v-btn>
+          :loading="loading"
+          >Sign up</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-form>
 </template>
 <script>
+function validateEmail(email) {
+  return /.+@.+\..+/.test(email);
+}
+const passwordLength = 3;
+
 export default {
   data: () => ({
     valid: true,
     step: 1,
     email: "",
-    emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ],
+    emailRules: [v => !!v || "E-mail is required", validateEmail],
     password: "",
     passwordRules: [
       v => !!v || "Password is required",
-      v => !(v && v.length < 6) || "Password must be at least 6 characters"
+      v =>
+        !(v && v.length < passwordLength) ||
+        `Password must be at least ${passwordLength} characters`
     ],
     confirmPassword: ""
   }),
@@ -120,6 +135,12 @@ export default {
     },
     user() {
       return this.$store.getters.user;
+    },
+    validEmail() {
+      return this.validateEmail(this.email);
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   },
   methods: {
@@ -129,10 +150,8 @@ export default {
         password: this.password
       });
       this.step++;
-    }
-    // validateForm() {
-    //   this.$refs.form.validate();
-    // }
+    },
+    validateEmail
   },
   watch: {
     user(value) {

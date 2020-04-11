@@ -82,7 +82,12 @@
           </v-row>
           <v-row>
             <v-col cols="12" sm="6" offset-sm="3" class="py-0">
-              <v-btn class="primary" :disabled="!formIsValid" type="submit">Create Event</v-btn>
+              <v-btn
+                class="primary"
+                :disabled="!formIsValid"
+                :loading="loading"
+                type="submit"
+              >Create Event</v-btn>
             </v-col>
           </v-row>
         </form>
@@ -117,6 +122,9 @@ export default {
         this.startTime !== "" &&
         this.endTime !== ""
       );
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   },
   methods: {

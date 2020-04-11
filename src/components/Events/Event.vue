@@ -6,13 +6,20 @@
           <v-card-title>
             <h3 class="text--secondary">{{ event.title }}</h3>
           </v-card-title>
-          <v-img :src="event.imageUrl" class="white--text align-end" gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="400px">
+          <v-img
+            :src="event.imageUrl"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            height="400px"
+          >
           </v-img>
           <v-card-text>
             <div>
               <span class="info--text">{{ event.start | date }}</span> -
               <span class="success--text">{{ event.end | date }}</span>
-              <span class="primary--text d-inline-block ml-5">{{ event.location }}</span>
+              <span class="primary--text d-inline-block ml-5">{{
+                event.location
+              }}</span>
             </div>
             <div>
               {{ event.description }}
@@ -22,7 +29,9 @@
             <!-- <v-spacer></v-spacer> -->
             <v-btn class="primary"><v-icon>mdi-bookmark</v-icon>Join</v-btn>
             <v-btn class="primary"><v-icon>mdi-heart</v-icon>Interested</v-btn>
-            <v-btn class="primary"><v-icon>mdi-share-variant</v-icon>Share</v-btn>
+            <v-btn class="primary"
+              ><v-icon>mdi-share-variant</v-icon>Share</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-col>
@@ -35,14 +44,14 @@ export default {
   props: {
     id: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     event() {
       return this.$store.getters.loadedEvent(this.id);
-    },
-  },
+    }
+  }
 };
 </script>
 

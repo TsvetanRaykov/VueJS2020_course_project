@@ -6,15 +6,12 @@
           <v-list-item-avatar>
             <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
           </v-list-item-avatar>
-
           <v-list-item-content>
-            <v-list-item-title class="title">John Leider</v-list-item-title>
-            <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+            <v-list-item-title class="title">John Daw</v-list-item-title>
+            <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-
         <v-divider></v-divider>
-
         <v-list dense>
           <v-list-item
             v-for="item in menuItems"
@@ -78,6 +75,10 @@ export default {
   },
   methods: {
     navigate(url) {
+      if (url === "logout") {
+        this.$store.dispatch("logoutUser");
+        return;
+      }
       this.$router.push(url).catch(() => {});
     },
     alertDismissHandler() {
@@ -95,6 +96,9 @@ export default {
         this.$store.getters.user !== null &&
         this.$store.getters.user !== undefined
       );
+    },
+    user() {
+      return this.$store.getters.user || { email: "", avatarUrl: "" };
     },
     menuItems() {
       // common items

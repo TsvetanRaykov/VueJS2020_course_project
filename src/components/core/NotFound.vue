@@ -75,5 +75,5 @@ export default {
 }
 .footer a {
   color: rgb(228, 146, 162);
-}
-</style>>
+}</style
+>>

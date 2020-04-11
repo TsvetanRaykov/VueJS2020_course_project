@@ -86,7 +86,8 @@ export default new Vuex.Store({
               description: obj[key].description,
               imageUrl: obj[key].imageUrl,
               start: obj[key].start,
-              end: obj[key].end
+              end: obj[key].end,
+              creatorId: obj[key].creatorId
             });
           }
           commit("setLoadedEvents", events);
@@ -99,7 +100,7 @@ export default new Vuex.Store({
           commit("setLoading", false);
         });
     },
-    createEvent({ commit }, payload) {
+    createEvent({ commit, getters }, payload) {
       commit("setLoading", true);
       const event = {
         title: payload.title,
@@ -107,7 +108,8 @@ export default new Vuex.Store({
         imageUrl: payload.imageUrl,
         description: payload.description,
         start: payload.start,
-        end: payload.end
+        end: payload.end,
+        creatorId: getters.user.id
       };
       firebase
         .database()
@@ -178,7 +180,16 @@ export default new Vuex.Store({
       commit("clearError");
     },
     logoutUser({ commit }) {
+      firebase.auth().signOut();
       commit("setUser", null);
+    },
+    autoLogin({ commit }, payload) {
+      commit("setUser", {
+        id: payload.id,
+        eventsJoined: [],
+        eventsInterested: [],
+        eventsCreated: []
+      });
     }
   },
   getters: {

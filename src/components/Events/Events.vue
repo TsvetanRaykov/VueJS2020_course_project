@@ -4,7 +4,13 @@
       <v-col colls="12">
         <v-container fluid>
           <v-row dense>
-            <v-col v-for="event in events" :key="event.id" xs="12" sm="6" md="3">
+            <v-col
+              v-for="event in events"
+              :key="event.id"
+              xs="12"
+              sm="6"
+              md="3"
+            >
               <!-- <v-hover>
                 <template v-slot="{ hover }">
               <v-card :to="event | eventDetailsLink" :elevation="hover ? 18 : 6">-->
@@ -26,7 +32,7 @@
                       lg="6"
                       class="text-no-wrap text-left caption py-0"
                     >
-                      <h4>{{ event.start | date('DD MMMM YYYY') }}</h4>
+                      <h4>{{ event.start | date("DD MMMM YYYY") }}</h4>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -36,13 +42,17 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
-                <v-card-actions class="py-0" :class="{'justify-center':!isAuth}">
+                <v-card-actions
+                  class="py-0"
+                  :class="{ 'justify-center': !isAuth }"
+                >
                   <v-btn
                     class="ma-2"
                     outlined
                     color="primary"
                     :to="event | eventDetailsLink"
-                  >Event Details</v-btn>
+                    >Event Details</v-btn
+                  >
                   <v-spacer v-if="isAuth"></v-spacer>
                   <span v-if="isAuth">
                     <v-btn icon>

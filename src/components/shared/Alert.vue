@@ -1,5 +1,7 @@
 <template>
-  <v-alert dense outlined type="error" @input="onClose" dismissible>{{text}}</v-alert>
+  <v-alert dense outlined type="error" @input="onClose" dismissible>{{
+    text
+  }}</v-alert>
 </template>
 
 <script>

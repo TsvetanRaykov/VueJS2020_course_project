@@ -10,7 +10,13 @@
         <form @submit.prevent="createEventHandler">
           <v-row>
             <v-col cols="12" sm="6" offset-sm="3" ma="0" class="py-0">
-              <v-text-field name="title" id="title" label="Title" v-model="title" required></v-text-field>
+              <v-text-field
+                name="title"
+                id="title"
+                label="Title"
+                v-model="title"
+                required
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
@@ -87,7 +93,8 @@
                 :disabled="!formIsValid"
                 :loading="loading"
                 type="submit"
-              >Create Event</v-btn>
+                >Create Event</v-btn
+              >
             </v-col>
           </v-row>
         </form>

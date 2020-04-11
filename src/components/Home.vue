@@ -10,12 +10,22 @@
     </v-row>
     <v-row v-if="loading">
       <v-col cols="12" class="text-center">
-        <v-progress-circular :size="100" color="primary" indeterminate :width="7"></v-progress-circular>
+        <v-progress-circular
+          :size="100"
+          color="primary"
+          indeterminate
+          :width="7"
+        ></v-progress-circular>
       </v-col>
     </v-row>
     <v-row v-if="!loading">
       <v-col cols="12">
-        <v-carousel cycle height="400" hide-delimiter-background show-arrows-on-hover>
+        <v-carousel
+          cycle
+          height="400"
+          hide-delimiter-background
+          show-arrows-on-hover
+        >
           <v-carousel-item
             v-for="event in events"
             :key="event.id"

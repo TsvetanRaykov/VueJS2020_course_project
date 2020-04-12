@@ -29,17 +29,49 @@
             height="400px"
           ></v-img>
           <v-card-text>
-            <div>
-              <span class="info--text">{{ event.start | date }}</span> -
-              <span class="success--text">{{ event.end | date }}</span>
-              <span class="primary--text d-inline-block ml-5">
+            <div class="d-flex justify-content-between">
+              <div v-if="userIsCreator">
+                <date-time-picker
+                  class="d-inline mr-2"
+                  :no-value-to-custom-elem="true"
+                  v-model="startPickerValue"
+                  @validate="validate"
+                >
+                  <v-btn class="info--text" type="button" text>
+                    {{ event.start | date }}
+                  </v-btn></date-time-picker
+                >
+                -
+                <date-time-picker
+                  class="d-inline ml-2"
+                  :no-value-to-custom-elem="true"
+                  v-model="endPickerValue"
+                  color="#00C853"
+                  @validate="validate"
+                >
+                  <v-btn class="success--text" type="button" text>
+                    {{ event.end | date }}
+                  </v-btn></date-time-picker
+                >
+              </div>
+              <div v-else>
+                <div class="info--text d-inline mr-2">
+                  {{ event.start | date }}
+                </div>
+                -
+                <div class="success--text d-inline ml-2">
+                  {{ event.end | date }}
+                </div>
+              </div>
+              <v-spacer></v-spacer>
+              <div class="primary--text d-inline-block ml-5">
                 {{ event.location }}
-              </span>
+              </div>
             </div>
+
             <div>{{ event.description }}</div>
           </v-card-text>
           <v-card-actions>
-            <!-- <v-spacer></v-spacer> -->
             <v-btn class="primary"> <v-icon>mdi-bookmark</v-icon>Join </v-btn>
             <v-btn class="primary">
               <v-icon>mdi-heart</v-icon>Interested
@@ -56,8 +88,11 @@
 
 <script>
 import EditEventDetailsDialog from "../events/edit/EditEventDetailsDialog";
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
+import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import moment from "moment";
 export default {
-  components: { EditEventDetailsDialog },
+  components: { EditEventDetailsDialog, DateTimePicker: VueCtkDateTimePicker },
   props: {
     id: {
       type: String,
@@ -67,6 +102,24 @@ export default {
   computed: {
     event() {
       return this.$store.getters.loadedEvent(this.id);
+    },
+    startPickerValue: {
+      get: function() {
+        return this.event.start ? moment(this.event.start) : null;
+      },
+      set: function(value) {
+        this.event.start = value;
+        this.isStartChanged = true;
+      }
+    },
+    endPickerValue: {
+      get: function() {
+        return this.event.end ? moment(this.event.end) : null;
+      },
+      set: function(value) {
+        this.event.end = value;
+        this.isStartChanged = false;
+      }
     },
     userIsAuthenticated() {
       return (
@@ -83,6 +136,26 @@ export default {
     loading() {
       return this.$store.getters.loading;
     }
+  },
+  methods: {
+    validate() {
+      const updateObj = {
+        id: this.event.id
+      };
+      if (this.isStartChanged) {
+        updateObj.start = new Date(this.event.start).getTime();
+      } else {
+        updateObj.end = new Date(this.event.end).getTime();
+      }
+
+      this.$store.dispatch("updateEvent", updateObj);
+    }
+  },
+  data() {
+    return {
+      isStartChanged: true,
+      changedTime: false
+    };
   }
 };
 </script>

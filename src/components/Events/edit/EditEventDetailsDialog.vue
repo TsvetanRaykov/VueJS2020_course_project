@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent width="400">
     <template v-slot:activator="{ on }">
       <v-btn color="primary--text" fab v-on="on"
-        ><v-icon>mdi-calendar-edit</v-icon></v-btn
+        ><v-icon>mdi-pencil</v-icon></v-btn
       >
     </template>
     <v-card>
@@ -16,6 +16,14 @@
             v-model="editedTitle"
             required
             :rules="titleRules"
+          ></v-text-field>
+          <v-text-field
+            name="location"
+            id="location"
+            label="Location"
+            v-model="editedLocation"
+            required
+            :rules="locationRules"
           ></v-text-field>
           <v-textarea
             name="description"
@@ -55,6 +63,8 @@ export default {
       valid: true,
       dialog: false,
       editedTitle: this.event.title,
+      editedLocation: this.event.location,
+      locationRules: [v => !!v || "Location is required"],
       editedDescription: this.event.description,
       titleRules: [v => !!v || "Title is required"],
       descriptionRules: [v => !!v || "Description is required"]
@@ -66,6 +76,7 @@ export default {
       this.$store.dispatch("updateEvent", {
         id: this.event.id,
         title: this.editedTitle,
+        location: this.editedLocation,
         description: this.editedDescription
       });
     }

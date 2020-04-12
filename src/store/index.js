@@ -15,6 +15,26 @@ export default new Vuex.Store({
     createEvent(state, payload) {
       state.loadedEvents.push(payload);
     },
+    updateEvent(state, payload) {
+      const event = state.loadedEvents.find(event => {
+        return event.id === payload.id;
+      });
+      if (payload.title) {
+        event.title = payload.title;
+      }
+      if (payload.location) {
+        event.location = payload.location;
+      }
+      if (payload.description) {
+        event.description = payload.description;
+      }
+      if (payload.start) {
+        event.start = payload.start;
+      }
+      if (payload.end) {
+        event.end = payload.end;
+      }
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -105,9 +125,39 @@ export default new Vuex.Store({
         })
         .catch(error => {
           commit("setError", error);
-          commit("setLoading", false);
-          console.log(error);
-        });
+        })
+        .finally(() => commit("setLoading", false));
+    },
+    updateEvent({ commit }, payload) {
+      commit("setLoading", true);
+      const updateObj = {};
+      if (payload.title) {
+        updateObj.title = payload.title;
+      }
+      if (payload.location) {
+        updateObj.location = payload.location;
+      }
+      if (payload.description) {
+        updateObj.description = payload.description;
+      }
+      if (payload.start) {
+        updateObj.start = payload.start;
+      }
+      if (payload.end) {
+        updateObj.end = payload.end;
+      }
+      if (Object.keys(updateObj).length > 0) {
+        firebase
+          .database()
+          .ref("events")
+          .child(payload.id)
+          .update(updateObj)
+          .then(() => {
+            commit("updateEvent", payload);
+          })
+          .catch(error => commit("setError", error))
+          .finally(() => commit("setLoading", false));
+      }
     },
     registerUser({ commit }, payload) {
       commit("setLoading", true);

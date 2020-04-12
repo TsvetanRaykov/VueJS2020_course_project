@@ -18,7 +18,7 @@
         ></v-progress-circular>
       </v-col>
     </v-row>
-    <v-row v-if="!loading">
+    <v-row v-else>
       <v-col cols="12">
         <v-carousel
           cycle

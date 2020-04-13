@@ -20,6 +20,6 @@ const routes = [
 ];
 
 export default {
-  mode: "history",
+  // mode: "history",
   routes
 };

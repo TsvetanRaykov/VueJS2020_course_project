@@ -31,17 +31,37 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(data => {
+        .then(async data => {
           commit("clearError");
           const { user } = data;
-          const newUser = {
-            id: user.uid,
-            eventsJoined: [],
-            eventsInterested: [],
-            eventsCreated: [],
-            fbKeys: {}
-          };
-          commit("setUser", newUser);
+          if (user) {
+            const fileName = payload.image.name;
+            const ext = fileName.slice(fileName.lastIndexOf("."));
+            try {
+              const imageData = await firebase
+                .storage()
+                .ref(`users/${user.uid}${ext}`)
+                .put(payload.image);
+              const imageUrl = await imageData.metadata.ref.getDownloadURL();
+              await user.updateProfile({
+                displayName: payload.name,
+                photoURL: imageUrl
+              });
+              const newUser = {
+                id: user.uid,
+                email: user.email,
+                photoURL: user.photoURL,
+                name: user.displayName,
+                eventsJoined: [],
+                eventsInterested: [],
+                eventsCreated: [],
+                fbKeys: {}
+              };
+              commit("setUser", newUser);
+            } catch (error) {
+              console.error(error);
+            }
+          }
         })
         .catch(error => {
           commit("setError", error);
@@ -61,6 +81,9 @@ export default {
           const { user } = data;
           const newUser = {
             id: user.uid,
+            email: user.email,
+            photoURL: user.photoURL,
+            name: user.displayName,
             eventsJoined: [],
             eventsInterested: [],
             eventsCreated: [],
@@ -83,6 +106,9 @@ export default {
     autoLogin({ commit }, payload) {
       commit("setUser", {
         id: payload.uid,
+        email: payload.email,
+        photoURL: payload.photoURL,
+        name: payload.displayName,
         eventsJoined: [],
         eventsInterested: [],
         eventsCreated: [],

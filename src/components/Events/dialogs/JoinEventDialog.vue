@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent width="400">
     <template v-slot:activator="{ on }">
       <v-btn class="primary" v-on="on">
-        <v-icon>mdi-bookmark</v-icon
+        <v-icon :class="{ 'red--text': userIsRegistered }">mdi-bookmark</v-icon
         >{{ userIsRegistered ? "Left" : "Join" }}</v-btn
       >
     </template>
@@ -59,4 +59,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.red {
+  color: red;
+}
+</style>

@@ -55,11 +55,11 @@
                   >
                   <v-spacer v-if="isAuth"></v-spacer>
                   <span v-if="isAuth">
-                    <v-btn icon>
+                    <!-- <v-btn icon>
                       <v-icon>mdi-heart</v-icon>
-                    </v-btn>
+                    </v-btn> -->
 
-                    <v-btn icon class="hidden-md-only">
+                    <v-btn icon>
                       <v-icon>mdi-bookmark</v-icon>
                     </v-btn>
 

@@ -2,12 +2,17 @@
   <v-container>
     <header>
       <v-navigation-drawer v-model="sideNav" absolute temporary>
-        <v-list-item>
+        <v-list-item v-if="isAuth">
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/1.jpg"></v-img>
+            <v-img v-if="user.photoURL" :src="user.photoURL"></v-img>
+            <v-progress-circular
+              v-else
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title class="title">John Daw</v-list-item-title>
+            <v-list-item-title class="title">{{ user.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -37,6 +42,7 @@
           <router-link tag="span" to="/" class="pointer">EventOur</router-link>
         </v-toolbar-title>
         <v-spacer></v-spacer>
+
         <v-item-group class="hidden-sm-and-down">
           <v-btn
             color="white"
@@ -53,6 +59,13 @@
             {{ item.title }}
           </v-btn>
         </v-item-group>
+        <!-- <v-menu offset-y="">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark v-on="on">
+              {{ user.email }}
+            </v-btn>
+          </template>
+        </v-menu> -->
       </v-app-bar>
     </header>
     <v-row class="row-alert">
@@ -120,12 +133,8 @@ export default {
               {
                 title: "Joined",
                 icon: "mdi-clipboard-check-multiple-outline",
-                url: "/events/joined"
-              },
-              {
-                title: "Interested",
-                icon: "mdi-clipboard-check-multiple",
-                url: "/events/interested"
+                url: "/events/joined",
+                count: 0
               },
               {
                 title: "Create Event",
@@ -139,7 +148,8 @@ export default {
               },
               {
                 title: "Log out",
-                icon: "mdi-account-off-outline"
+                icon: "mdi-account-off-outline",
+                url: "logout"
               }
             ]
           : [

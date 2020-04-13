@@ -49,6 +49,22 @@ export default new Vuex.Store({
     },
     setLoadedEvents(state, payload) {
       state.loadedEvents = payload;
+    },
+    registerUserToEvent(state, payload) {
+      const { id, fbKey } = payload;
+      if (state.user.eventsJoined.includes(id)) {
+        return;
+      }
+      state.user.eventsJoined.push(id);
+      state.user.fbKeys[id] = fbKey;
+    },
+    unregisterUserFromEvent(state, payload) {
+      const eventsJoined = state.user.eventsJoined;
+      eventsJoined.splice(
+        eventsJoined.findIndex(eventId => eventId === payload),
+        1
+      );
+      delete state.user.fbKeys[payload];
     }
   },
   actions: {
@@ -171,7 +187,8 @@ export default new Vuex.Store({
             id: user.uid,
             eventsJoined: [],
             eventsInterested: [],
-            eventsCreated: []
+            eventsCreated: [],
+            fbKeys: {}
           };
           commit("setUser", newUser);
         })
@@ -195,7 +212,8 @@ export default new Vuex.Store({
             id: user.uid,
             eventsJoined: [],
             eventsInterested: [],
-            eventsCreated: []
+            eventsCreated: [],
+            fbKeys: {}
           };
           commit("setUser", newUser);
         })
@@ -219,8 +237,41 @@ export default new Vuex.Store({
         id: payload.uid,
         eventsJoined: [],
         eventsInterested: [],
-        eventsCreated: []
+        eventsCreated: [],
+        fbKeys: {}
       });
+    },
+    registerUserToEvent({ commit, getters }, payload) {
+      commit("setLoading", true);
+      const user = getters.user;
+      firebase
+        .database()
+        .ref(`/users/${user.id}`)
+        .child("joined")
+        .push(payload)
+        .then(data => {
+          commit("registerUserToEvent", { id: payload, fbKey: data.key });
+        })
+        .catch(error => commit("setError", error))
+        .finally(() => commit("setLoading", false));
+    },
+    unregisterUserFromEvent({ commit, getters }, payload) {
+      commit("setLoading", true);
+      const user = getters.user;
+      if (!user.fbKeys) {
+        return;
+      }
+      const fbKey = user.fbKeys[payload];
+      firebase
+        .database()
+        .ref(`/users/${user.id}/joined/`)
+        .child(fbKey)
+        .remove()
+        .then(() => {
+          commit("unregisterUserFromEvent", payload);
+        })
+        .catch(error => commit("setError", error))
+        .finally(() => commit("setLoading", false));
     }
   },
   getters: {

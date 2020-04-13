@@ -72,11 +72,11 @@
             <div>{{ event.description }}</div>
           </v-card-text>
           <v-card-actions>
-            <v-btn class="primary"> <v-icon>mdi-bookmark</v-icon>Join </v-btn>
-            <v-btn class="primary">
+            <join-event-dialog :event-id="id"></join-event-dialog>
+            <v-btn class="primary mx-3">
               <v-icon>mdi-heart</v-icon>Interested
             </v-btn>
-            <v-btn class="primary">
+            <v-btn class="primary mx-0">
               <v-icon>mdi-share-variant</v-icon>Share
             </v-btn>
           </v-card-actions>
@@ -87,12 +87,17 @@
 </template>
 
 <script>
-import EditEventDetailsDialog from "../events/edit/EditEventDetailsDialog";
+import EditEventDetailsDialog from "../events/dialogs/EditEventDetailsDialog";
+import JoinEventDialog from "../events/dialogs/JoinEventDialog";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import moment from "moment";
 export default {
-  components: { EditEventDetailsDialog, DateTimePicker: VueCtkDateTimePicker },
+  components: {
+    EditEventDetailsDialog,
+    DateTimePicker: VueCtkDateTimePicker,
+    JoinEventDialog
+  },
   props: {
     id: {
       type: String,

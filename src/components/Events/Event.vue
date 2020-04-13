@@ -72,11 +72,14 @@
             <div>{{ event.description }}</div>
           </v-card-text>
           <v-card-actions>
-            <join-event-dialog :event-id="id"></join-event-dialog>
-            <v-btn class="primary mx-3">
-              <v-icon>mdi-heart</v-icon>Interested
-            </v-btn>
-            <v-btn class="primary mx-0">
+            <template v-if="userIsAuthenticated && !userIsCreator">
+              <join-event-dialog :event-id="id"></join-event-dialog>
+              <v-btn class="primary mx-3">
+                <v-icon>mdi-heart</v-icon>Interested
+              </v-btn>
+            </template>
+            <v-spacer></v-spacer>
+            <v-btn class="primary">
               <v-icon>mdi-share-variant</v-icon>Share
             </v-btn>
           </v-card-actions>

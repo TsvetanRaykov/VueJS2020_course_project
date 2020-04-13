@@ -241,6 +241,27 @@ export default new Vuex.Store({
         fbKeys: {}
       });
     },
+    fetchUserData({ commit, getters }) {
+      commit("setLoading", true);
+      firebase
+        .database()
+        .ref(`/users/${getters.user.id}/joined/`)
+        .once("value")
+        .then(data => {
+          const values = data.val();
+          if (values) {
+            const eventsJoined = [];
+            const fbKeys = {};
+            Object.entries(values).forEach(([key, val]) => {
+              fbKeys[val] = key;
+              eventsJoined.push(val);
+            });
+            commit("setUser", { ...getters.user, fbKeys, eventsJoined });
+          }
+        })
+        .catch(error => commit("setError", error))
+        .finally(() => commit("setLoading", false));
+    },
     registerUserToEvent({ commit, getters }, payload) {
       commit("setLoading", true);
       const user = getters.user;

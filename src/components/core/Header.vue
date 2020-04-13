@@ -74,9 +74,13 @@ export default {
     };
   },
   methods: {
+    logOut() {
+      this.$store.dispatch("logoutUser");
+      this.$router.push("/").catch(() => {});
+    },
     navigate(url) {
       if (url === "logout") {
-        this.$store.dispatch("logoutUser");
+        this.logOut();
         return;
       }
       this.$router.push(url).catch(() => {});
@@ -86,7 +90,7 @@ export default {
     },
     menuClick(title) {
       if (title === "Log out") {
-        this.$store.dispatch("logoutUser");
+        this.logOut();
       }
     }
   },

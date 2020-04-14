@@ -83,7 +83,7 @@ The firebase *File Storage* is used by the application as well to upload the Eve
 
 The EventOur application also offer a simple and responsive UI/UX, to facilitate its usage on mobile devices:
 
-<img src="http://www.orbital.bg/eventour/2020-04-15_00-43-50.gif" style="zoom: 80%;" />
+<img src="http://www.orbital.bg/eventour/2020-04-15_00-43-50.gif" style="zoom: 50%;" />
 
 
 

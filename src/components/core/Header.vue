@@ -3,13 +3,12 @@
     <header>
       <v-navigation-drawer v-model="sideNav" absolute temporary>
         <v-list-item v-if="isAuth">
-          <v-list-item-avatar>
-            <v-img v-if="user.photoURL" :src="user.photoURL"></v-img>
-            <v-progress-circular
-              v-else
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+          <v-list-item-avatar v-if="user.photoURL">
+            <v-img
+              :src="user.photoURL"
+              class="pointer"
+              @click="navigate('/user/profile')"
+            ></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="title">{{ user.name }}</v-list-item-title>
@@ -44,28 +43,36 @@
         <v-spacer></v-spacer>
 
         <v-item-group class="hidden-sm-and-down">
-          <v-btn
-            color="white"
-            class="text-capitalize"
-            text
-            rounded
-            v-for="item in menuItems"
-            :key="item.title"
-            :to="item.url"
-            @click="menuClick(item.title)"
-            exact
-          >
-            <v-icon>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
-        </v-item-group>
-        <!-- <v-menu offset-y="">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark v-on="on">
+          <span v-for="item in menuItems" :key="item.title">
+            <top-menu-item :count="item.count">
+              <v-btn
+                color="white"
+                class="text-capitalize"
+                text
+                rounded
+                :to="item.url"
+                @click="menuClick(item.title)"
+                exact
+              >
+                <v-icon>{{ item.icon }}</v-icon>
+                {{ item.title }}
+              </v-btn>
+            </top-menu-item>
+          </span>
+          <v-tooltip bottom color="info" v-if="isAuth">
+            <template v-slot:activator="{ on }">
+              <router-link to="/user/profile">
+                <v-avatar v-on="on">
+                  <img :src="user.photoURL" :alt="user.name" />
+                </v-avatar>
+              </router-link>
+            </template>
+            <div>
+              {{ user.name }} <br />
               {{ user.email }}
-            </v-btn>
-          </template>
-        </v-menu> -->
+            </div>
+          </v-tooltip>
+        </v-item-group>
       </v-app-bar>
     </header>
     <v-row class="row-alert">
@@ -80,7 +87,9 @@
   </v-container>
 </template>
 <script>
+import TopMenuItem from "./TopMenuItem";
 export default {
+  components: { TopMenuItem },
   data() {
     return {
       sideNav: false
@@ -123,7 +132,8 @@ export default {
         {
           title: "Events",
           icon: "mdi-clipboard-play-multiple-outline",
-          url: "/events"
+          url: "/events",
+          count: this.eventsCount
         }
       ];
       return items.concat(
@@ -140,11 +150,6 @@ export default {
                 title: "Create Event",
                 icon: "mdi-clipboard-plus-outline",
                 url: "/events/create"
-              },
-              {
-                title: "Profile",
-                icon: "mdi-account-details",
-                url: "/user/profile"
               },
               {
                 title: "Log out",
@@ -164,6 +169,9 @@ export default {
     },
     error() {
       return this.$store.getters.error;
+    },
+    eventsCount() {
+      return this.$store.getters.loadedEvents.length;
     }
   }
 };

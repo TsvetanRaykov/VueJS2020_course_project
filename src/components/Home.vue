@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col xs="12" sm="6" class="text-center text-sm-right">
-        <v-btn large to="/events" class="info">Explore Events</v-btn>
-      </v-col>
-      <v-col xs="12" sm="6" class="text-center text-sm-left">
-        <v-btn large to="/events/create" class="info">Create Event</v-btn>
-      </v-col>
-    </v-row>
     <v-row v-if="loading">
       <v-col cols="12" class="text-center">
         <v-progress-circular
@@ -38,7 +30,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" class="text-center">Visit our events!</v-col>
+      <v-col cols="12" class="text-center">Welcome to our events!</v-col>
     </v-row>
   </v-container>
 </template>

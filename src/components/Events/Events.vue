@@ -38,7 +38,6 @@
                   <v-row>
                     <v-col cols="12" class="py-0">
                       {{ event.location }}
-                      <!-- <h4>{{ event.end | date }}</h4> -->
                     </v-col>
                   </v-row>
                 </v-card-text>

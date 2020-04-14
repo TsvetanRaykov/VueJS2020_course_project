@@ -235,17 +235,17 @@ export default {
   },
   watch: {
     user(value) {
-      this.step++;
+      // this.step++;
       if (value !== null && value !== undefined) {
-        this.progressInterval = setInterval(() => {
-          if (this.progressText > 0) {
-            this.progressText--;
-            this.progressValue += 33;
-          } else {
-            clearInterval(this.progressInterval);
-            this.$router.push("/events").catch(() => {});
-          }
-        }, 1000);
+        // this.progressInterval = setInterval(() => {
+        //   if (this.progressText > 0) {
+        //     this.progressText--;
+        //     this.progressValue += 33;
+        //   } else {
+        //     clearInterval(this.progressInterval);
+        this.$router.push("/events").catch(() => {});
+        //   }
+        // }, 1000);
       }
     }
   },

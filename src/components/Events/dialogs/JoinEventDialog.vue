@@ -1,7 +1,10 @@
 <template>
   <v-dialog v-model="dialog" persistent width="400">
     <template v-slot:activator="{ on }">
-      <v-btn class="primary" v-on="on">
+      <v-btn v-if="isIcon" icon v-on="on">
+        <v-icon :class="{ 'red--text': isJoined }">mdi-bookmark</v-icon></v-btn
+      >
+      <v-btn v-else class="primary" v-on="on">
         <v-icon :class="{ 'red--text': isJoined }">mdi-bookmark</v-icon
         >{{ isJoined ? "Left" : "Join" }}</v-btn
       >
@@ -32,6 +35,7 @@ export default {
     };
   },
   props: {
+    isIcon: { type: Boolean, required: true },
     eventId: {
       type: String,
       required: true

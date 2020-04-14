@@ -10,7 +10,7 @@
         ></v-progress-circular>
       </v-col>
     </v-row>
-    <v-row v-else>
+    <v-row v-else-if="event">
       <v-col cols="12">
         <v-card>
           <v-card-title>
@@ -73,7 +73,10 @@
           </v-card-text>
           <v-card-actions>
             <template v-if="userIsAuthenticated && !userIsCreator">
-              <join-event-dialog :event-id="id"></join-event-dialog>
+              <join-event-dialog
+                :event-id="id"
+                :isIcon="false"
+              ></join-event-dialog>
               <!-- <v-btn class="primary mx-3">
                 <v-icon>mdi-heart</v-icon>Interested
               </v-btn> -->

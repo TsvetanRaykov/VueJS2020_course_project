@@ -56,10 +56,14 @@
                         <!-- <v-btn icon>
                       <v-icon>mdi-heart</v-icon>
                     </v-btn> -->
-
-                        <v-btn icon>
+                        <join-event-dialog
+                          v-if="!userIsCreator(event.id)"
+                          :event-id="event.id"
+                          :isIcon="true"
+                        ></join-event-dialog>
+                        <!-- <v-btn icon>
                           <v-icon>mdi-bookmark</v-icon>
-                        </v-btn>
+                        </v-btn> -->
 
                         <v-btn icon class="hidden-md-only">
                           <v-icon>mdi-share-variant</v-icon>
@@ -78,7 +82,9 @@
 </template>
 
 <script>
+import JoinEventDialog from "../events/dialogs/JoinEventDialog";
 export default {
+  components: { JoinEventDialog },
   computed: {
     events() {
       return this.$store.getters.loadedEvents;

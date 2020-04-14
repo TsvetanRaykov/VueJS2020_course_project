@@ -2,12 +2,12 @@
   <v-dialog v-model="dialog" persistent width="400">
     <template v-slot:activator="{ on }">
       <v-btn class="primary" v-on="on">
-        <v-icon :class="{ 'red--text': userIsRegistered }">mdi-bookmark</v-icon
-        >{{ userIsRegistered ? "Left" : "Join" }}</v-btn
+        <v-icon :class="{ 'red--text': isJoined }">mdi-bookmark</v-icon
+        >{{ isJoined ? "Left" : "Join" }}</v-btn
       >
     </template>
     <v-card>
-      <v-card-title class="headline" v-if="userIsRegistered"
+      <v-card-title class="headline" v-if="isJoined"
         >Unregister from the Event?</v-card-title
       >
       <v-card-title class="headline" v-else>Join the Event?</v-card-title>
@@ -38,7 +38,7 @@ export default {
     }
   },
   computed: {
-    userIsRegistered() {
+    isJoined() {
       return (
         this.$store.getters.user.eventsJoined.findIndex(eventId => {
           return eventId === this.eventId;
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     joinAgreeHandler() {
-      if (this.userIsRegistered) {
+      if (this.isJoined) {
         this.$store.dispatch("unregisterUserFromEvent", this.eventId);
       } else {
         this.$store.dispatch("registerUserToEvent", this.eventId);

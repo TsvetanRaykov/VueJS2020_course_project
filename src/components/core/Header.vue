@@ -144,7 +144,7 @@ export default {
                 title: "Joined",
                 icon: "mdi-clipboard-check-multiple-outline",
                 url: "/events/joined",
-                count: 0
+                count: this.eventsJoined
               },
               {
                 title: "Create Event",
@@ -172,6 +172,9 @@ export default {
     },
     eventsCount() {
       return this.$store.getters.loadedEvents.length;
+    },
+    eventsJoined() {
+      return this.$store.getters.user.eventsJoined.length;
     }
   }
 };

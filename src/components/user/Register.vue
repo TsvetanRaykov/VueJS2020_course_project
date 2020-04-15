@@ -155,7 +155,7 @@
 function validateEmail(email) {
   return /.+@.+\..+/.test(email);
 }
-const passwordLength = 3;
+const passwordLength = 6;
 
 export default {
   data: () => ({
@@ -235,17 +235,8 @@ export default {
   },
   watch: {
     user(value) {
-      // this.step++;
       if (value !== null && value !== undefined) {
-        // this.progressInterval = setInterval(() => {
-        //   if (this.progressText > 0) {
-        //     this.progressText--;
-        //     this.progressValue += 33;
-        //   } else {
-        //     clearInterval(this.progressInterval);
         this.$router.push("/events").catch(() => {});
-        //   }
-        // }, 1000);
       }
     }
   },

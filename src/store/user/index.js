@@ -71,6 +71,57 @@ export default {
           commit("setLoading", false);
         });
     },
+    async updateUser({ commit }, payload) {
+      const user = firebase.auth().currentUser;
+
+      if (!user) {
+        return;
+      }
+      commit("setLoading", true);
+      try {
+        const updateUser = {};
+        let imageUrl = null;
+        if (payload.image) {
+          const fileName = payload.image.name;
+          const ext = fileName.slice(fileName.lastIndexOf("."));
+          const imageData = await firebase
+            .storage()
+            .ref(`users/${user.id}${ext}`)
+            .put(payload.image);
+          imageUrl = await imageData.metadata.ref.getDownloadURL();
+        }
+        if (imageUrl) {
+          updateUser.photoURL = imageUrl;
+        }
+        if (payload.name) {
+          updateUser.displayName = payload.name;
+        }
+        if (payload.password) {
+          await firebase
+            .auth()
+            .signInWithEmailAndPassword(payload.email, payload.currentPassword)
+            .then(async data => {
+              const { user } = data;
+              await user.updatePassword(payload.password);
+            });
+        }
+        await user.updateProfile(updateUser);
+        const newUser = {
+          id: user.uid,
+          email: user.email,
+          photoURL: user.photoURL,
+          name: user.displayName,
+          eventsJoined: [],
+          eventsInterested: [],
+          eventsCreated: [],
+          fbKeys: {}
+        };
+        commit("setUser", newUser);
+      } catch (error) {
+        console.error(error);
+      }
+      commit("setLoading", false);
+    },
     loginUser({ commit }, payload) {
       commit("setLoading", true);
       firebase

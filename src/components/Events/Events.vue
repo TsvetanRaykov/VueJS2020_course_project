@@ -119,11 +119,6 @@ export default {
     shareLink(event) {
       return `${window.location.href}/${event.id}`;
     }
-  },
-  watch: {
-    joined(value) {
-      console.log(value);
-    }
   }
 };
 </script>

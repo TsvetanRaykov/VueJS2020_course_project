@@ -15,6 +15,20 @@
             <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item v-else>
+          <v-list-item-avatar>
+            <v-img
+              src="../../assets/logo.png"
+              class="pointer"
+              @click="navigate('/')"
+            ></v-img>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="title">EventOur</v-list-item-title>
+            <v-list-item-subtitle>Welcome</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-divider></v-divider>
         <v-list dense>
           <v-list-item

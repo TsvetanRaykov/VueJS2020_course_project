@@ -53,7 +53,7 @@
                       >
                       <v-spacer></v-spacer>
                       <join-event-dialog
-                        v-if="isAuth && !userIsCreator(event.id)"
+                        v-if="isAuth && !userIsCreator(event.creatorId)"
                         :event-id="event.id"
                         :isIcon="true"
                       ></join-event-dialog>
@@ -84,24 +84,32 @@ export default {
     joined: {
       type: Boolean,
       default: false
+    },
+    created: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     events() {
-      if (this.isAuth && this.joined && this.$store.getters.user.eventsJoined) {
-        const arrJoined = this.$store.getters.user.eventsJoined.slice(0);
+      if (this.isAuth && this.joined && this.eventsJoined) {
+        const arrJoined = this.user.eventsJoined.slice(0);
         return this.$store.getters.loadedEvents.filter(e =>
           arrJoined.includes(e.id)
+        );
+      } else if (this.isAuth && this.created) {
+        return this.$store.getters.loadedEvents.filter(
+          e => e.creatorId === this.user.id
         );
       } else {
         return this.$store.getters.loadedEvents;
       }
     },
     isAuth() {
-      return (
-        this.$store.getters.user !== null &&
-        this.$store.getters.user !== undefined
-      );
+      return this.user !== null && this.user !== undefined;
+    },
+    user() {
+      return this.$store.getters.user;
     }
   },
   methods: {
@@ -109,7 +117,7 @@ export default {
       if (!this.isAuth) {
         return false;
       }
-      return this.$store.getters.user.id === eventCreatorId;
+      return this.user.id === eventCreatorId;
     }
   },
   filters: {

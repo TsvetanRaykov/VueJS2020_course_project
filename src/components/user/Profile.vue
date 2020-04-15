@@ -75,6 +75,38 @@
         </v-col>
       </v-row>
       <v-row justify="end">
+        <v-dialog v-model="terminateDialog" width="300">
+          <v-card>
+            <v-card-title class="headline">Close your account?</v-card-title>
+
+            <v-card-text>
+              Are you sure, you want to terminate your account in EventOur ? :(
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn
+                color="green darken-1"
+                text
+                @click="terminateDialog = false"
+              >
+                Cancel
+              </v-btn>
+
+              <v-btn color="error darken-1" text @click="terminateAccount">
+                Agree
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-btn
+          class="error"
+          type="button"
+          :loading="loading"
+          @click.stop="terminateDialog = true"
+          >Terminate Account</v-btn
+        >
         <v-btn
           class="primary mx-2"
           type="submit"
@@ -113,7 +145,8 @@ export default {
       avatarRules: [
         v => !!v || "Avatar is required",
         v => !v || v.size < 1000000 || "Image size should be less than 1 MB!"
-      ]
+      ],
+      terminateDialog: false
     };
   },
   computed: {
@@ -158,6 +191,10 @@ export default {
         this.updateUser.password = this.password;
       }
       await this.$store.dispatch("updateUser", this.updateUser);
+    },
+    async terminateAccount() {
+      await this.$store.dispatch("terminateUserAccount", this.updateUser);
+      this.$router.push("/").catch(() => {});
     }
   },
   watch: {

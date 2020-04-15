@@ -20,6 +20,12 @@ const routes = [
     props: { joined: true },
     beforeEnter: AuthGuard
   },
+  {
+    path: "/events/created",
+    component: EventsAll,
+    props: { created: true },
+    beforeEnter: AuthGuard
+  },
   { path: "/events/:id", component: EventDetails, props: true },
   { path: "/events", component: EventsAll },
   { path: "*", component: NotFound }

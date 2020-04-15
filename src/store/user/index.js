@@ -218,6 +218,12 @@ export default {
         })
         .catch(error => commit("setError", error))
         .finally(() => commit("setLoading", false));
+    },
+    async terminateUserAccount({ commit }) {
+      commit("setLoading", true);
+      await firebase.auth().currentUser.delete();
+      commit("setUser", null);
+      commit("setLoading", false);
     }
   },
   getters: {

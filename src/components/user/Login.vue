@@ -23,7 +23,7 @@
         />
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="success" to="/user/register">Register</v-btn>
+          <v-btn text color="success" to="/user/register">Register</v-btn>
           <v-spacer></v-spacer>
           <v-btn
             color="info"

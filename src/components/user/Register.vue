@@ -59,7 +59,11 @@
             ></v-file-input>
             <v-row>
               <v-col cols="12" class="text-center">
-                <img class="img-preview" :src="imageUrl" />
+                <!-- <img class="img-preview" :src="imageUrl" /> -->
+                <v-row justify="center"
+                  ><v-avatar v-if="imageUrl" size="128">
+                    <img :src="imageUrl" /> </v-avatar
+                ></v-row>
               </v-col>
             </v-row>
           </v-card-text>
@@ -106,8 +110,12 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn v-if="step === 1" color="success" to="/user/login">Login</v-btn>
-        <v-btn v-else-if="step !== 4" @click="step--" color="info">Back</v-btn>
+        <v-btn text v-if="step === 1" color="success" to="/user/login"
+          >Login</v-btn
+        >
+        <v-btn text v-else-if="step !== 4" @click="step--" color="info"
+          >Back</v-btn
+        >
         <v-spacer v-if="step !== 4"></v-spacer>
         <v-btn
           v-if="step === 1"

@@ -10,7 +10,7 @@ From the user's point of view. It is a simple platform for creating, sharing and
 
 ### Basic functionality
 
-**Guest user** can explore the Events and review their details. He also can share the events to his social networks. To do more he must be registered.
+**Guest user** can explore the Events and review their details. He also can share the events to the social networks. To do more he must be registered.
 
 The registration process require the following mandatory data to be provided:
 
@@ -50,6 +50,7 @@ The project is a SPA based on [VueJS v2](https://vuejs.org/v2/guide/) framework.
 * **firebase - 7.13.2** - to facilitate communication with the [firebase database](https://firebase.google.com/), and user authentication.
 * **moment - 2.24.0** - to facilitate working with times and dates.
 * **vue-ctk-date-time-picker - 2.4.0** - a nice component to pick the date and time up.
+* **vue-share-it - 1.1.1** - A component that makes sharing to social networks available.
 * **vue-router - 3.1.6** - to navigate upon the components.
 * **vuetify - 2.2.11** - a Vue UI Library with beautifully handcrafted Material Components.
 * **vuex - 3.1.3** -  The Vue state management library to arrange a centralized store for all components in the application, and manage its state mutations properly.

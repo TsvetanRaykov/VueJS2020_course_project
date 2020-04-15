@@ -77,14 +77,10 @@
                 :event-id="id"
                 :isIcon="false"
               ></join-event-dialog>
-              <!-- <v-btn class="primary mx-3">
-                <v-icon>mdi-heart</v-icon>Interested
-              </v-btn> -->
             </template>
-            <!-- <v-spacer></v-spacer> -->
-            <v-btn class="primary ml-3">
-              <v-icon>mdi-share-variant</v-icon>Share
-            </v-btn>
+            <div>
+              <social-sharing-dialog class="ml-3"></social-sharing-dialog>
+            </div>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -98,11 +94,13 @@ import JoinEventDialog from "../events/dialogs/JoinEventDialog";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import moment from "moment";
+import SocialSharingDialog from "./dialogs/SocialSharingDialog";
 export default {
   components: {
     EditEventDetailsDialog,
     DateTimePicker: VueCtkDateTimePicker,
-    JoinEventDialog
+    JoinEventDialog,
+    SocialSharingDialog
   },
   props: {
     id: {

@@ -7,9 +7,11 @@ import store from "./store";
 import dateFilter from "./filters/date";
 import * as firebase from "firebase";
 import Alert from "./components/shared/Alert";
+import shareIt from "vue-share-it";
 
 const router = new VueRouter(routes);
 
+Vue.use(shareIt);
 Vue.use(VueRouter);
 Vue.filter("date", dateFilter);
 Vue.component("app-alert", Alert);

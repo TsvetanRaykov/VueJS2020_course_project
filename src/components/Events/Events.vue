@@ -51,24 +51,18 @@
                         :to="event | eventDetailsLink"
                         >Event Details</v-btn
                       >
-                      <v-spacer v-if="isAuth"></v-spacer>
-                      <span v-if="isAuth">
-                        <!-- <v-btn icon>
-                      <v-icon>mdi-heart</v-icon>
-                    </v-btn> -->
-                        <join-event-dialog
-                          v-if="!userIsCreator(event.id)"
-                          :event-id="event.id"
+                      <v-spacer></v-spacer>
+                      <join-event-dialog
+                        v-if="isAuth && !userIsCreator(event.id)"
+                        :event-id="event.id"
+                        :isIcon="true"
+                      ></join-event-dialog>
+                      <div class="mx-2 hidden-md-only">
+                        <social-sharing-dialog
+                          :shareUrl="event | shareLink"
                           :isIcon="true"
-                        ></join-event-dialog>
-                        <!-- <v-btn icon>
-                          <v-icon>mdi-bookmark</v-icon>
-                        </v-btn> -->
-
-                        <v-btn icon class="hidden-md-only">
-                          <v-icon>mdi-share-variant</v-icon>
-                        </v-btn>
-                      </span>
+                        ></social-sharing-dialog>
+                      </div>
                     </v-card-actions>
                   </v-card>
                 </template>
@@ -83,8 +77,9 @@
 
 <script>
 import JoinEventDialog from "../events/dialogs/JoinEventDialog";
+import SocialSharingDialog from "./dialogs/SocialSharingDialog";
 export default {
-  components: { JoinEventDialog },
+  components: { JoinEventDialog, SocialSharingDialog },
   computed: {
     events() {
       return this.$store.getters.loadedEvents;
@@ -107,6 +102,9 @@ export default {
   filters: {
     eventDetailsLink(event) {
       return `/events/${event.id}`;
+    },
+    shareLink(event) {
+      return `${window.location.href}/${event.id}`;
     }
   }
 };

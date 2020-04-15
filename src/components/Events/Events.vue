@@ -92,7 +92,7 @@ export default {
   },
   computed: {
     events() {
-      if (this.isAuth && this.joined && this.eventsJoined) {
+      if (this.isAuth && this.joined && this.user.eventsJoined) {
         const arrJoined = this.user.eventsJoined.slice(0);
         return this.$store.getters.loadedEvents.filter(e =>
           arrJoined.includes(e.id)

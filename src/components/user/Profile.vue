@@ -66,11 +66,27 @@
         <v-col>
           <v-row class="mt-5">
             <v-col cols="6"><h3>Events submitted</h3></v-col>
-            <v-col cols="6">{{ eventsCreated }}</v-col>
+            <v-col cols="6"
+              ><v-badge
+                :color="badgeColor(eventsCreated)"
+                :content="eventsCreated"
+                inline
+                overlap
+              >
+              </v-badge
+            ></v-col>
           </v-row>
           <v-row>
             <v-col cols="6"><h3>Events joined</h3></v-col>
-            <v-col cols="6">{{ eventsJoined }}</v-col>
+            <v-col cols="6">
+              <v-badge
+                :color="badgeColor(eventsJoined)"
+                :content="eventsJoined"
+                inline
+                overlap
+              >
+              </v-badge>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -162,18 +178,23 @@ export default {
       return this.$store.getters.user;
     },
     eventsCreated() {
-      return this.$store.getters.loadedEvents.filter(
-        e => e.creatorId === this.user.id
-      ).length;
+      return JSON.stringify(
+        this.$store.getters.loadedEvents.filter(
+          e => e.creatorId === this.user.id
+        ).length
+      );
     },
     eventsJoined() {
-      return this.user.eventsJoined.length;
+      return JSON.stringify(this.user.eventsJoined.length);
     },
     loading() {
       return this.$store.getters.loading;
     }
   },
   methods: {
+    badgeColor(value) {
+      return value > 0 ? "info" : "error";
+    },
     filePickedHandler(img) {
       if (!img) {
         return;

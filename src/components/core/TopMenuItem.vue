@@ -4,8 +4,10 @@
       v-if="count"
       color="info"
       :content="count"
-      offset-x="10"
-      overlap=""
+      offset-x="15"
+      offset-y="37"
+      bottom
+      overlap
     >
       <slot> </slot>
     </v-badge>

@@ -80,9 +80,22 @@ import JoinEventDialog from "../events/dialogs/JoinEventDialog";
 import SocialSharingDialog from "./dialogs/SocialSharingDialog";
 export default {
   components: { JoinEventDialog, SocialSharingDialog },
+  props: {
+    joined: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     events() {
-      return this.$store.getters.loadedEvents;
+      if (this.isAuth && this.joined && this.$store.getters.user.eventsJoined) {
+        const arrJoined = this.$store.getters.user.eventsJoined.slice(0);
+        return this.$store.getters.loadedEvents.filter(e =>
+          arrJoined.includes(e.id)
+        );
+      } else {
+        return this.$store.getters.loadedEvents;
+      }
     },
     isAuth() {
       return (
@@ -105,6 +118,11 @@ export default {
     },
     shareLink(event) {
       return `${window.location.href}/${event.id}`;
+    }
+  },
+  watch: {
+    joined(value) {
+      console.log(value);
     }
   }
 };

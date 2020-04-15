@@ -14,6 +14,12 @@ const routes = [
   { path: "/user/register", component: UserRegister },
   { path: "/user/profile", component: UserProfile, beforeEnter: AuthGuard },
   { path: "/events/create", component: EventsCreate, beforeEnter: AuthGuard },
+  {
+    path: "/events/joined",
+    component: EventsAll,
+    props: { joined: true },
+    beforeEnter: AuthGuard
+  },
   { path: "/events/:id", component: EventDetails, props: true },
   { path: "/events", component: EventsAll },
   { path: "*", component: NotFound }

@@ -21,7 +21,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="dialog = false">
-            Cancel
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -36,7 +36,7 @@ export default {
       type: String,
       default: () => window.location.href
     },
-    isIcon: { type: Boolean, required: true }
+    isIcon: { type: Boolean, default: false }
   },
   data() {
     return {

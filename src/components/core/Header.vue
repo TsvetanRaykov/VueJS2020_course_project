@@ -27,7 +27,16 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>
+                <v-badge
+                  v-if="item.count"
+                  color="primary--text"
+                  :content="item.count"
+                  inline
+                  >{{ item.title }}</v-badge
+                >
+                <span v-else>{{ item.title }}</span>
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
